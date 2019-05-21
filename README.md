@@ -18,3 +18,5 @@ Todo List with React and Ring UI
      ]
  }
 ~~~
+
+Приложение создано вот [этим](https://github.com/JetBrains/ring-ui#quick-start) путем
