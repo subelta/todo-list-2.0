@@ -1,0 +1,13 @@
+.form {
+    display: flex;
+    width: 100%;
+}
+
+.input-field {
+    width: 70%;
+    min-width: 300px; 
+}
+
+.add-todo-btn {
+    align-self: center;
+}

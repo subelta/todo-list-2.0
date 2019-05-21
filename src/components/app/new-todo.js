@@ -1,42 +1,65 @@
 import React, { Component } from 'react'
+import Input from '@jetbrains/ring-ui/components/input/input';
+import Group from '@jetbrains/ring-ui/components/group/group';
+import Button from '@jetbrains/ring-ui/components/button/button';
+
 import uuid from 'uuid/v4';
-// import "./NewTodo.css";
+import './new-todo.css'
 
 
 class NewTodo extends Component {
     constructor(props) {
         super(props);
-        this.state = {task: ""};
+        this.state = {
+            task: "",
+            danger: false
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    toggleDanger(e) {
+
+    }
+
     handleChange(e) {
         this.setState({
-            [e.target.name]: e.target.value
+            task: e.target.value,
+            danger: false
         }) 
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.createTodo({...this.state, id: uuid(), completed: false});
+        if (this.state.task) {
+            this.props.createTodo({...this.state, id: uuid(), completed: false});
+        } else {
+            this.setState({ danger: true})
+        }
         this.setState({task: ""});
     } 
 
     render() {
         return(
-            <form onSubmit={this.handleSubmit}>
-                <label htmlFor="task">New Todo</label>
-                <input 
-                    id="task" 
+            <Group className="form">
+                <Input 
+                    id="task"
                     name="task"
-                    type="text"
+                    label="Введите задачу" 
+                    className="input-field"
                     value={this.state.task}
-                    placeholder="New Todo"
                     onChange={ this.handleChange }
+                    autoComplete="off"
+                    error={this.state.danger ? 'Вы ничего не ввели' : null}
                 />
-                <button>Add Todo</button>
-            </form>
+                <Button 
+                    primary 
+                    delayed 
+                    className="add-todo-btn"
+                    onMouseDown={this.handleSubmit}>
+                    Добавить задачу
+                </Button>
+            </Group>
         );
     };
 }
