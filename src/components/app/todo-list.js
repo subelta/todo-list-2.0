@@ -1,16 +1,19 @@
 import React, {Component} from 'react';
 import Island, { AdaptiveIsland, Header, Content } from '@jetbrains/ring-ui/components/island/island';
+import { Tabs, Tab, SmartTabs, CustomItem } from '@jetbrains/ring-ui/components/tabs/tabs';
 
 import './todo-list.css'
 import Todo from './todo'
 import NewTodo from './new-todo'
+
+import Data from '../../../incoming-data/todo-list' 
 
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todos : []
+            todos : [],
         }
         this.create = this.create.bind(this);
         this.remove = this.remove.bind(this);
@@ -18,9 +21,51 @@ class TodoList extends Component {
         this.toggleCompletion = this.toggleCompletion.bind(this);
     }
 
+
+    componentDidMount() {
+        if (localStorage.hasOwnProperty('todos')) {
+            if (localStorage.getItem('todos').length > 2) {
+                // Читаем из нашего localstorage
+                console.log(localStorage.getItem('todos'));
+                this.getFromLocalStorage();
+            } else {
+                // Читаем из нашего JSONа
+                let data = Data.todoList.map((todo) => {
+                    todo.completed = (todo.completed == "false") ? false : true;
+                    return todo;
+                })
+                this.setState({ todos : data});
+                console.log("srbtefvdAS");
+            }
+        } 
+    
+        window.addEventListener("beforeunload", this.saveToLocalStorage.bind(this));
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener(
+          "beforeunload",
+          this.saveToLocalStorage.bind(this)
+        );
+        this.saveToLocalStorage();
+    }
+
+    getFromLocalStorage() {
+        let list = localStorage.getItem('todos');    
+        list = JSON.parse(list) || [];
+        this.setState({ todos : list });
+    }
+
+    saveToLocalStorage() {
+        for (let key in this.state) {
+          localStorage.setItem(key, JSON.stringify(this.state[key]));
+        }
+    }
+
+
     create(newTodo) {
         this.setState({
-            todos: [...this.state.todos, newTodo] 
+            todos: [newTodo, ...this.state.todos] 
         });
     }
 
@@ -51,6 +96,8 @@ class TodoList extends Component {
     }
 
     render() {
+        // console.log(this.state.todos)
+        // localStorage.setItem('todos', JSON.stringify(this.state.todos));
         const todos = this.state.todos.map(todo => {
             return <Todo 
                         key={todo.id} 
@@ -68,6 +115,7 @@ class TodoList extends Component {
                     <h1 className="heading">Todo List</h1>
                     <p className="info">With React and Ring UI</p>
                     <NewTodo createTodo={this.create}/>
+                    {/* <Tabs></Tabs> */}
                 </Header>
                 <Content fade>
                     <ul>
@@ -79,16 +127,5 @@ class TodoList extends Component {
     }
 }
 
-    //   <AdaptiveIsland className="limited-island" narrow>
-    //     <Header>Title</Header>
-    //     <Content fade>
-    //       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-    //       standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-    //       make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-    //       typesetting, remaining essentially unchanged.
-    //     </Content>
-    //   </AdaptiveIsland>
-    // )
-  
 
-  export default TodoList;
+export default TodoList;

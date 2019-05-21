@@ -14,7 +14,7 @@ class Todo extends Component {
         this.state = { 
             isEditing: false, 
             task: this.props.task,
-            danger: false
+            empty: false
         }; 
 
         this.handleRemove = this.handleRemove.bind(this);
@@ -38,14 +38,14 @@ class Todo extends Component {
             this.props.updateTodo(this.props.id, this.state.task);
             this.setState({isEditing: false})
         } else {
-            this.setState({ danger: true})
+            this.setState({ empty: true})
         }
     }
 
     handleChange(e) {
         this.setState({
             task: e.target.value,
-            danger: false
+            empty: false
         }) 
     }
 

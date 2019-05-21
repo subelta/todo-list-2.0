@@ -58,7 +58,7 @@ class NewTodo extends Component {
                     value={this.state.task}
                     onChange={ this.handleChange }
                     autoComplete="off"
-                    error={this.state.danger ? 'Input something!' : null}
+                    error={this.state.danger ? 'Type something!' : null}
                     // clearable="true"
                     onKeyDown={this.handleKeyPress}
                 />

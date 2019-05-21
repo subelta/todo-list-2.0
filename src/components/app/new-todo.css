@@ -15,7 +15,8 @@
 .add-todo-btn {
     align-self: center;
     height: 30px;
-    width: 130px
+    width: 130px;
+    /* background-color: #4bd479; */
 }
 
 /* span button::after {
