@@ -1,0 +1,33 @@
+@import "@jetbrains/ring-ui/components/global/variables.css";
+
+html,
+.app-root {
+  height: 100%;
+}
+
+.app-root {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  margin: 0;
+  padding: 3rem 0;
+  box-sizing: border-box;
+  
+  background-color: #77abff;
+  width: 100%;
+
+  font-family: var(--ring-font-family);
+  font-size: var(--ring-font-size);
+  line-height: var(--ring-line-height);
+}
+
+
+.root-div {
+  width: 60%;
+  min-width: 400px;
+}
+
+
+.app-content {
+  margin: calc(var(--ring-unit) * 4);
+}

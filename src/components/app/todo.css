@@ -1,0 +1,7 @@
+.todo-task {
+    color: blue;
+}
+
+.completed {
+    text-decoration: line-through;
+}
