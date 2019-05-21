@@ -3,11 +3,25 @@
     width: 100%;
 }
 
+.input-wrapper{
+    font-size: 1rem;
+}
+
 .input-field {
-    width: 70%;
-    min-width: 300px; 
+    /* height: 40px; */
+    padding: 12px 0 8px;
 }
 
 .add-todo-btn {
     align-self: center;
+    height: 30px;
+    width: 130px
 }
+
+/* span button::after {
+    content: '4e';
+}
+
+.add-todo-btn span::after {
+    content: '4e';
+} */

@@ -1,7 +1,29 @@
 .todo-task {
-    color: blue;
+    display: flex; 
+    justify-content: space-between;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #77abff;
+    border-radius: 4px;
+    max-height: 40px;
+}
+
+
+.edit-field-wrap {
+    padding: 0;
+    width: 100%;
+    font-size: 1.1rem;   
+}
+
+.edit-btn {
+    align-self: center;
+}
+
+.task-text {
+    font-size: 1.1rem;
 }
 
 .completed {
+    color: #77abff !important;
     text-decoration: line-through;
 }

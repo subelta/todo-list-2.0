@@ -16,10 +16,17 @@ class NewTodo extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.submit = this.submit.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    toggleDanger(e) {
-
+    submit() {
+        if (this.state.task) {
+            this.props.createTodo({...this.state, id: uuid(), completed: false});
+        } else {
+            this.setState({ danger: true})
+        }
+        this.setState({task: ""});
     }
 
     handleChange(e) {
@@ -29,15 +36,15 @@ class NewTodo extends Component {
         }) 
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        if (this.state.task) {
-            this.props.createTodo({...this.state, id: uuid(), completed: false});
-        } else {
-            this.setState({ danger: true})
-        }
-        this.setState({task: ""});
+    handleSubmit() {
+        this.submit();
     } 
+
+    handleKeyPress(e) {
+        if(e.keyCode == 13){
+            this.submit();
+        }
+    }
 
     render() {
         return(
@@ -45,19 +52,22 @@ class NewTodo extends Component {
                 <Input 
                     id="task"
                     name="task"
-                    label="Введите задачу" 
-                    className="input-field"
+                    label="Input todo" 
+                    className="input-wrapper"
+                    inputClassName="input-field"
                     value={this.state.task}
                     onChange={ this.handleChange }
                     autoComplete="off"
-                    error={this.state.danger ? 'Вы ничего не ввели' : null}
+                    error={this.state.danger ? 'Input something!' : null}
+                    // clearable="true"
+                    onKeyDown={this.handleKeyPress}
                 />
                 <Button 
                     primary 
                     delayed 
                     className="add-todo-btn"
                     onMouseDown={this.handleSubmit}>
-                    Добавить задачу
+                    Add Todo
                 </Button>
             </Group>
         );

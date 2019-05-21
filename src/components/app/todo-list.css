@@ -2,3 +2,19 @@
     height: 100%;
 }
 
+.island-header div {
+    width: 100%;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+.heading {
+    font-size: 2rem;
+}
+
+.info {
+    font-size: 1.1rem;
+}

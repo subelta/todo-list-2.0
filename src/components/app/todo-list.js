@@ -63,10 +63,10 @@ class TodoList extends Component {
                     />;
         });
         return(
-            <AdaptiveIsland className="limited-island" narrow>
-                <Header border>
-                    Todo List
-                    <p>Todo list with React and Ring UI</p>
+            <Island className="limited-island" narrow>
+                <Header className="island-header" border>
+                    <h1 className="heading">Todo List</h1>
+                    <p className="info">With React and Ring UI</p>
                     <NewTodo createTodo={this.create}/>
                 </Header>
                 <Content fade>
@@ -74,7 +74,7 @@ class TodoList extends Component {
                         { todos }
                     </ul>
                 </Content>
-            </AdaptiveIsland>
+            </Island>
         )
     }
 }
