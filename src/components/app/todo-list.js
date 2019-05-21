@@ -1,23 +1,20 @@
 import React, {Component} from 'react';
 import Island, { AdaptiveIsland, Header, Content } from '@jetbrains/ring-ui/components/island/island';
-// import { Tabs, Tab, SmartTabs, CustomItem } from '@jetbrains/ring-ui/components/tabs/tabs';
 import Group from '@jetbrains/ring-ui/components/group/group';
 import Button from '@jetbrains/ring-ui/components/button/button';
-
+import Alert, { Container } from '@jetbrains/ring-ui/components/alert/alert';
 
 import './todo-list.css'
 import Todo from './todo'
 import NewTodo from './new-todo'
-
-import Data from '../../../incoming-data/todo-list' 
-
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             todos : [],
-            tab: 'all'
+            tab: 'all',
+            jsonErr: false
         }
         this.create = this.create.bind(this);
         this.remove = this.remove.bind(this);
@@ -26,24 +23,38 @@ class TodoList extends Component {
         this.showAll = this.showAll.bind(this);
         this.showActive = this.showActive.bind(this);
         this.showCompleted = this.showCompleted.bind(this);
+        this.closeAlert = this.closeAlert.bind(this);
     }
 
 
     componentDidMount() {
+        this.setState({ jsonErr: false })
         if (localStorage.hasOwnProperty('todos')) {
             if (localStorage.getItem('todos').length > 2) {
                 // Читаем из нашего localstorage
-                this.getFromLocalStorage();
+                this.getListFromLocalStorage();
             } else {
                 // Читаем из нашего JSONа
-                let data = Data.todoList.map((todo) => {
-                    todo.completed = (todo.completed == "false") ? false : true;
-                    return todo;
-                })
-                this.setState({ todos : data});
+                try {
+                    var list = require('../../../incoming-data/todo-list.json');
+                    list = list.todoList.map((todo) => {
+                        todo.completed = (todo.completed == "false") ? false : true;
+                        return todo;
+                    })
+                    this.setState({ todos : list});
+                }
+                catch (e) {
+                    console.log('can\'t read this file');
+                    console.log(e);
+                    this.setState({
+                        todos: [],
+                        jsonErr: true
+                    })
+                }
+                
             }
         } 
-    
+        
         window.addEventListener("beforeunload", this.saveToLocalStorage.bind(this));
     }
     
@@ -55,7 +66,7 @@ class TodoList extends Component {
         this.saveToLocalStorage();
     }
 
-    getFromLocalStorage() {
+    getListFromLocalStorage() {
         let list = localStorage.getItem('todos');    
         list = JSON.parse(list) || [];
         this.setState({ todos : list });
@@ -119,6 +130,12 @@ class TodoList extends Component {
         })
     }
 
+    closeAlert() {
+        this.setState({
+            jsonErr: false
+        });
+    }
+
     render() {
         const todos = this.state.todos.map(todo => {
             return <Todo 
@@ -135,7 +152,6 @@ class TodoList extends Component {
         const completed = todos.filter(todo => todo.props.completed);
         const active = todos.filter(todo => !todo.props.completed);
         const tab = this.state.tab;
-
         return(
             <Island className="limited-island" narrow>
                 <Header className="island-header" border>
@@ -171,6 +187,16 @@ class TodoList extends Component {
                         { (tab == "all") ? todos : (tab == "active") ? active : completed }
                     </ul>
                 </Content>
+                <div className="alert">
+                    { 
+                        this.state.jsonErr ? 
+                        <Alert 
+                            type="error"
+                            onCloseRequest={this.closeAlert}>
+                            Can't read JSON. File is missing or invalid
+                        </Alert> : ''
+                    }
+                </div>
             </Island>
         )
     }
