@@ -2,8 +2,17 @@
     height: 100%;
 }
 
+.limited-island div:nth-child(1) {
+    border: none;
+}
+
 .island-header div {
     width: 100%;
+}
+
+
+.island-content div {
+    border: none;
 }
 
 ul {
